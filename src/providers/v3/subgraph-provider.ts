@@ -63,6 +63,9 @@ const SUBGRAPH_URL_BY_CHAIN: { [chainId in ChainId]?: string } = {
     'https://api.thegraph.com/subgraphs/name/lynnshaoyu/uniswap-v3-avax',
   [ChainId.BASE]: 
     'https://api.studio.thegraph.com/query/48211/uniswap-v3-base/version/latest',
+  [ChainId.U2U_NEBULAS]: 
+    'https://subgraph-amm-testnet.uniultra.xyz/subgraphs/name/u2uswap/u2u-swap-v3',
+    
 };
 
 const PAGE_SIZE = 1000; // 1k is max possible query size from subgraph.
@@ -158,12 +161,12 @@ export class V3SubgraphProvider implements IV3SubgraphProvider {
             });
 
             poolsPage = poolsResult.pools;
-
+            console.log("🚀 ~ file: subgraph-provider.ts:164 ~ V3SubgraphProvider ~ getPools ~ poolsPage:", poolsPage)
             pools = pools.concat(poolsPage);
 
             lastId = pools[pools.length - 1]!.id;
           } while (poolsPage.length > 0);
-
+          console.log("🚀 ~ file: subgraph-provider.ts:153 ~ V3SubgraphProvider ~ getPools ~ pools:", pools)
           return pools;
         };
 

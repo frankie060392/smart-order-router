@@ -117,7 +117,7 @@ export class V3Quoter extends BaseQuoter<V3CandidatePools, V3Route> {
   ): Promise<GetQuotesResult> {
     const beforeGetQuotes = Date.now();
     log.info('Starting to get V3 quotes');
-
+    console.log('Starting to get V3 quotes')
     if (gasModel === undefined) {
       throw new Error('GasModel for V3RouteWithValidQuote is required to getQuotes');
     }
@@ -140,7 +140,7 @@ export class V3Quoter extends BaseQuoter<V3CandidatePools, V3Route> {
     log.info(
       `Getting quotes for V3 for ${routes.length} routes with ${amounts.length} amounts per route.`
     );
-
+    console.log(`Getting quotes for V3 for ${routes.length} routes with ${amounts.length} amounts per route.`)
     const { routesWithQuotes } = await quoteFn<V3Route>(amounts, routes, {
       blockNumber: routingConfig.blockNumber,
     });

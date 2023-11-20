@@ -16,6 +16,7 @@ export const SUPPORTED_CHAINS: ChainId[] = [
   ChainId.BNB,
   ChainId.AVALANCHE,
   ChainId.BASE,
+  ChainId.U2U_NEBULAS
   // Gnosis and Moonbeam don't yet have contracts deployed yet
 ];
 
@@ -79,6 +80,8 @@ export const ID_TO_CHAIN_ID = (id: number): ChainId => {
       return ChainId.BASE;
     case 84531:
       return ChainId.BASE_GOERLI;
+    case 2484:
+      return ChainId.U2U_NEBULAS
     default:
       throw new Error(`Unknown chain id: ${id}`);
   }
@@ -102,6 +105,7 @@ export enum ChainName {
   AVALANCHE = 'avalanche-mainnet',
   BASE = 'base-mainnet',
   BASE_GOERLI = 'base-goerli',
+  U2U_NEBULAS = 'u2u-nebulas'
 }
 
 
@@ -114,6 +118,7 @@ export enum NativeCurrencyName {
   MOONBEAM = 'GLMR',
   BNB = 'BNB',
   AVALANCHE = 'AVAX',
+  U2U_NEBULAS = 'U2U'
 }
 
 export const NATIVE_NAMES_BY_ID: { [chainId: number]: string[] } = {
@@ -197,6 +202,7 @@ export const NATIVE_CURRENCY: { [chainId: number]: NativeCurrencyName } = {
   [ChainId.BNB]: NativeCurrencyName.BNB,
   [ChainId.AVALANCHE]: NativeCurrencyName.AVALANCHE,
   [ChainId.BASE]: NativeCurrencyName.ETHER,
+  [ChainId.U2U_NEBULAS]: NativeCurrencyName.U2U_NEBULAS
 };
 
 export const ID_TO_NETWORK_NAME = (id: number): ChainName => {
@@ -235,6 +241,8 @@ export const ID_TO_NETWORK_NAME = (id: number): ChainName => {
       return ChainName.BASE;
     case 84531:
       return ChainName.BASE_GOERLI;
+    case 2484:
+      return ChainName.U2U_NEBULAS
     default:
       throw new Error(`Unknown chain id: ${id}`);
   }
@@ -274,6 +282,8 @@ export const ID_TO_PROVIDER = (id: ChainId): string => {
       return process.env.JSON_RPC_PROVIDER_AVALANCHE!;
     case ChainId.BASE:
       return process.env.JSON_RPC_PROVIDER_BASE!;
+    case ChainId.U2U_NEBULAS:
+      return process.env.JSON_RPC_PROVIDER_U2U_NEBULAS!;
     default:
       throw new Error(`Chain id: ${id} not supported`);
   }
@@ -400,6 +410,13 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId in ChainId]: Token } = {
     18,
     'WETH',
     'Wrapped Ether'
+  ),
+  [ChainId.U2U_NEBULAS]: new Token(
+    ChainId.U2U_NEBULAS,
+    '0xB2606029DE4AD7b30c615712726477ED466002d2',
+    18,
+    'WU2U',
+    'Wrapped U2U'
   )
 };
 

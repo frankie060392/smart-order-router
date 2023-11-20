@@ -124,6 +124,23 @@ export const USDT_GOERLI = new Token(
   'USDT',
   'Tether USD'
 );
+
+export const USDT_U2U = new Token(
+  ChainId.U2U_NEBULAS,
+  '0x766311486a55509b49F01E67D1Ac96b349DEcaAe',
+  18,
+  'USDC',
+  'USDC'
+);
+
+export const DAI_U2U = new Token(
+  ChainId.U2U_NEBULAS,
+  '0x49bdaA25B9e5198008960C02E96fdc9A4411E8a7',
+  18,
+  'Dai',
+  'DAI Stablecoin'
+);
+
 export const WBTC_GOERLI = new Token(
   ChainId.GOERLI,
   '0xa0a5ad2296b38bd3e3eb59aaeaf1589e8d9a29a9',

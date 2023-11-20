@@ -115,7 +115,9 @@ export async function getHighestLiquidityV3USDPool(
   providerConfig?: ProviderConfig
 ): Promise<Pool> {
   const usdTokens = usdGasTokensByChain[chainId];
+  console.log("🚀 ~ file: gas-factory-helpers.ts:118 ~ usdTokens:", usdTokens)
   const wrappedCurrency = WRAPPED_NATIVE_CURRENCY[chainId]!;
+  console.log("🚀 ~ file: gas-factory-helpers.ts:120 ~ wrappedCurrency:", wrappedCurrency)
 
   if (!usdTokens) {
     throw new Error(
@@ -137,6 +139,7 @@ export async function getHighestLiquidityV3USDPool(
       ]);
     })
     .value();
+  console.log("🚀 ~ file: gas-factory-helpers.ts:134 ~ usdPools:", usdPools)
 
   const poolAccessor = await poolProvider.getPools(usdPools, providerConfig);
 
@@ -160,6 +163,7 @@ export async function getHighestLiquidityV3USDPool(
     })
     .compact()
     .value();
+    console.log("🚀 ~ file: gas-factory-helpers.ts:152 ~ pools:", pools)
 
   if (pools.length == 0) {
     const message = `Could not find a USD/${wrappedCurrency.symbol} pool for computing gas costs.`;
@@ -177,7 +181,7 @@ export async function getHighestLiquidityV3USDPool(
 export function getGasCostInUSD(
   usdPool: Pool,
   costNativeCurrency: CurrencyAmount<Token>
-) {
+) : any {
   const nativeCurrency = costNativeCurrency.currency;
   // convert fee into usd
   const nativeTokenPrice =
@@ -205,7 +209,7 @@ export async function getGasCostInQuoteToken(
   quoteToken: Token,
   nativePool: Pool | Pair,
   costNativeCurrency: CurrencyAmount<Token>
-) {
+) : Promise<any> {
   const nativeTokenPrice =
     nativePool.token0.address == quoteToken.address
       ? nativePool.token1Price
@@ -270,7 +274,7 @@ export async function calculateGasUsed(
   v3PoolProvider: IV3PoolProvider,
   l2GasData?: ArbitrumGasData | OptimismGasData,
   providerConfig?: ProviderConfig
-) {
+): Promise<any> {
   const quoteToken = route.quote.currency.wrapped;
   const gasPriceWei = route.gasPriceWei;
   // calculate L2 to L1 security fee if relevant
