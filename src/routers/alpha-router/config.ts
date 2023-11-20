@@ -65,6 +65,7 @@ export const DEFAULT_ROUTING_CONFIG_BY_CHAIN = (
         forceCrossProtocol: false,
       };
     default:
+      console.log('get default routing');
       return {
         v2PoolSelection: {
           topN: 3,
@@ -79,17 +80,18 @@ export const DEFAULT_ROUTING_CONFIG_BY_CHAIN = (
         },
         v3PoolSelection: {
           topN: 2,
-          topNDirectSwaps: 2,
-          topNTokenInOut: 3,
+          topNDirectSwaps: 1,
+          topNTokenInOut: 1,
           topNSecondHop: 1,
-          topNWithEachBaseToken: 3,
-          topNWithBaseToken: 5,
+          topNWithEachBaseToken: 1,
+          topNWithBaseToken: 1,
         },
         maxSwapsPerPath: 3,
         minSplits: 1,
         maxSplits: 7,
         distributionPercent: 5,
         forceCrossProtocol: false,
+        debugRouting: true
       };
   }
 };

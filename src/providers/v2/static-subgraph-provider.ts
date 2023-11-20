@@ -41,7 +41,8 @@ const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.BNB]: [],
   [ChainId.AVALANCHE]: [],
   [ChainId.BASE_GOERLI]: [],
-  [ChainId.BASE]: []
+  [ChainId.BASE]: [],
+  [ChainId.U2U_NEBULAS]: [WRAPPED_NATIVE_CURRENCY[ChainId.U2U_NEBULAS]]
 };
 
 /**

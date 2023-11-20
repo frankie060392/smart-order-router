@@ -20,6 +20,7 @@ export const V3_CORE_FACTORY_ADDRESSES: AddressMap = {
   [ChainId.AVALANCHE]: CHAIN_TO_ADDRESSES_MAP[ChainId.AVALANCHE].v3CoreFactoryAddress,
   [ChainId.BASE_GOERLI]: CHAIN_TO_ADDRESSES_MAP[ChainId.BASE_GOERLI].v3CoreFactoryAddress,
   [ChainId.BASE]: CHAIN_TO_ADDRESSES_MAP[ChainId.BASE].v3CoreFactoryAddress,
+  [ChainId.U2U_NEBULAS]: CHAIN_TO_ADDRESSES_MAP[ChainId.U2U_NEBULAS].v3CoreFactoryAddress,
   // TODO: Gnosis + Moonbeam contracts to be deployed
 };
 
@@ -34,6 +35,7 @@ export const QUOTER_V2_ADDRESSES: AddressMap = {
   [ChainId.AVALANCHE]: CHAIN_TO_ADDRESSES_MAP[ChainId.AVALANCHE].quoterAddress,
   [ChainId.BASE_GOERLI]: CHAIN_TO_ADDRESSES_MAP[ChainId.BASE_GOERLI].quoterAddress,
   [ChainId.BASE]: CHAIN_TO_ADDRESSES_MAP[ChainId.BASE].quoterAddress,
+  [ChainId.U2U_NEBULAS]: CHAIN_TO_ADDRESSES_MAP[ChainId.U2U_NEBULAS].quoterAddress,
   // TODO: Gnosis + Moonbeam contracts to be deployed
 };
 
@@ -53,13 +55,16 @@ export const UNISWAP_MULTICALL_ADDRESSES: AddressMap = {
   [ChainId.AVALANCHE]: CHAIN_TO_ADDRESSES_MAP[ChainId.AVALANCHE].multicallAddress,
   [ChainId.BASE_GOERLI]: CHAIN_TO_ADDRESSES_MAP[ChainId.BASE_GOERLI].multicallAddress,
   [ChainId.BASE]: CHAIN_TO_ADDRESSES_MAP[ChainId.BASE].multicallAddress,
+  [ChainId.U2U_NEBULAS]: CHAIN_TO_ADDRESSES_MAP[ChainId.U2U_NEBULAS].multicallAddress,
   // TODO: Gnosis + Moonbeam contracts to be deployed
 };
 
 export const SWAP_ROUTER_02_ADDRESSES = (chainId: number) : string => {
   if (chainId == ChainId.BNB) {
     return BNB_SWAP_ROUTER_02_ADDRESS;
-  }
+  } else if (chainId == ChainId.U2U_NEBULAS) {
+    return CHAIN_TO_ADDRESSES_MAP[ChainId.U2U_NEBULAS].swapRouter02Address!;
+  };
   return '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45';
 };
 
@@ -162,6 +167,13 @@ export const WETH9: {
     18,
     'WETH',
     'Wrapped Ether'
+  ),
+  [ChainId.U2U_NEBULAS]: new Token(
+    ChainId.U2U_NEBULAS,
+    '0x003B2a50C925343280e43A8C48D13EDDe2598a9E',
+    18,
+    'WU2U',
+    'Wrapped U2U'
   )
 };
 
