@@ -64,7 +64,7 @@ const SUBGRAPH_URL_BY_CHAIN: { [chainId in ChainId]?: string } = {
   [ChainId.BASE]: 
     'https://api.studio.thegraph.com/query/48211/uniswap-v3-base/version/latest',
   [ChainId.U2U_NEBULAS]: 
-    'https://subgraph-amm-testnet.uniultra.xyz/subgraphs/name/u2uswap/u2u-swap-v3',
+    'https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2uswap/swap-v3',
     
 };
 
