@@ -115,9 +115,7 @@ export async function getHighestLiquidityV3USDPool(
   providerConfig?: ProviderConfig
 ): Promise<Pool> {
   const usdTokens = usdGasTokensByChain[chainId];
-  console.log("🚀 ~ file: gas-factory-helpers.ts:118 ~ usdTokens:", usdTokens)
   const wrappedCurrency = WRAPPED_NATIVE_CURRENCY[chainId]!;
-  console.log("🚀 ~ file: gas-factory-helpers.ts:120 ~ wrappedCurrency:", wrappedCurrency)
 
   if (!usdTokens) {
     throw new Error(
@@ -139,7 +137,6 @@ export async function getHighestLiquidityV3USDPool(
       ]);
     })
     .value();
-  console.log("🚀 ~ file: gas-factory-helpers.ts:134 ~ usdPools:", usdPools)
 
   const poolAccessor = await poolProvider.getPools(usdPools, providerConfig);
 
@@ -163,7 +160,6 @@ export async function getHighestLiquidityV3USDPool(
     })
     .compact()
     .value();
-    console.log("🚀 ~ file: gas-factory-helpers.ts:152 ~ pools:", pools)
 
   if (pools.length == 0) {
     const message = `Could not find a USD/${wrappedCurrency.symbol} pool for computing gas costs.`;

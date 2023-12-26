@@ -161,12 +161,10 @@ export class V3SubgraphProvider implements IV3SubgraphProvider {
             });
 
             poolsPage = poolsResult.pools;
-            console.log("🚀 ~ file: subgraph-provider.ts:164 ~ V3SubgraphProvider ~ getPools ~ poolsPage:", poolsPage)
             pools = pools.concat(poolsPage);
 
             lastId = pools[pools.length - 1]!.id;
           } while (poolsPage.length > 0);
-          console.log("🚀 ~ file: subgraph-provider.ts:153 ~ V3SubgraphProvider ~ getPools ~ pools:", pools)
           return pools;
         };
 

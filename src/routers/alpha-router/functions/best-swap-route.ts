@@ -44,7 +44,6 @@ export async function getBestSwapRoute(
   const now = Date.now();
 
   const { forceMixedRoutes } = routingConfig;
-  console.log("🚀 ~ file: best-swap-route.ts:47 ~ routingConfig:", routingConfig)
 
   /// Like with forceCrossProtocol, we apply that logic here when determining the bestSwapRoute
   if (forceMixedRoutes) {
@@ -90,7 +89,6 @@ export async function getBestSwapRoute(
     gasModel,
     swapConfig
   );
-  console.log("🚀 ~ file: best-swap-route.ts:93 ~ swapRoute:", swapRoute)
 
   // It is possible we were unable to find any valid route given the quotes.
   if (!swapRoute) {
@@ -108,10 +106,8 @@ export async function getBestSwapRoute(
     (total, routeAmount) => total.add(routeAmount.amount),
     CurrencyAmount.fromRawAmount(routeAmounts[0]!.amount.currency, 0)
   );
-  console.log("🚀 ~ file: best-swap-route.ts:111 ~ totalAmount:", totalAmount)
 
   const missingAmount = amount.subtract(totalAmount);
-  console.log("🚀 ~ file: best-swap-route.ts:114 ~ missingAmount:", missingAmount)
   if (missingAmount.greaterThan(0)) {
     log.info(
       {
@@ -123,7 +119,6 @@ export async function getBestSwapRoute(
     routeAmounts[routeAmounts.length - 1]!.amount =
       routeAmounts[routeAmounts.length - 1]!.amount.add(missingAmount);
   }
-  console.log("🚀 ~ file: best-swap-route.ts:108 ~ routeAmounts:", routeAmounts)
 
   log.info(
     {

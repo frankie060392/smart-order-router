@@ -65,7 +65,6 @@ export const DEFAULT_ROUTING_CONFIG_BY_CHAIN = (
         forceCrossProtocol: false,
       };
     default:
-      console.log('get default routing');
       return {
         v2PoolSelection: {
           topN: 3,

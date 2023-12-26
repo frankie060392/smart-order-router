@@ -837,15 +837,12 @@ export class AlphaRouter
         inputBalance,
         outputBalance
       );
-      console.log("🚀 ~ file: alpha-router.ts:840 ~ amountToSwap:", amountToSwap)
-      console.log("🚀 ~ file: alpha-router.ts:839 ~ outputBalance:", outputBalance)
       if (amountToSwap.equalTo(0)) {
         log.info(`no swap needed: amountToSwap = 0`);
         return {
           status: SwapToRatioStatus.NO_SWAP_NEEDED,
         };
       }
-      console.log("🚀 ~ file: alpha-router.ts:856 ~ routingConfig:", routingConfig)
 
       swap = await this.route(
         amountToSwap,
@@ -860,7 +857,6 @@ export class AlphaRouter
           protocols: [Protocol.V3, Protocol.V2],
         }
       );
-      console.log("🚀 ~ file: alpha-router.ts:859 ~ swap:", swap)
       if (!swap) {
         log.info('no route found from this.route()');
         return {
@@ -976,7 +972,6 @@ export class AlphaRouter
     swapConfig?: SwapOptions,
     partialRoutingConfig: Partial<AlphaRouterConfig> = {}
   ): Promise<SwapRoute | null> {
-    console.log("🚀 ~ file: alpha-router.ts:975 ~ tradeType:", tradeType)
     const originalAmount = amount;
     if (tradeType === TradeType.EXACT_OUTPUT) {
       const portionAmount = this.portionProvider.getPortionAmount(
@@ -998,16 +993,10 @@ export class AlphaRouter
     const { currencyIn, currencyOut } = this.determineCurrencyInOutFromTradeType(tradeType, amount, quoteCurrency);
 
     const tokenIn = currencyIn.wrapped;
-    console.log("🚀 ~ file: alpha-router.ts:997 ~ tokenIn:", tokenIn)
     const tokenOut = currencyOut.wrapped;
-    console.log("🚀 ~ file: alpha-router.ts:999 ~ tokenOut:", tokenOut)
 
     metric.setProperty('chainId', this.chainId);
     metric.setProperty('pair', `${tokenIn.symbol}/${tokenOut.symbol}`);
-
-    console.log(`pair ${tokenIn.symbol}/${tokenOut.symbol}`)
-    console.log('tokenIn ' + tokenIn.address)
-    console.log('tokenOut ' + tokenOut.address)
 
     metric.setProperty('tokenIn', tokenIn.address);
     metric.setProperty('tokenOut', tokenOut.address);
@@ -1022,7 +1011,6 @@ export class AlphaRouter
     // Get a block number to specify in all our calls. Ensures data we fetch from chain is
     // from the same block.
     const blockNumber = partialRoutingConfig.blockNumber ?? (await this.getBlockNumberPromise());
-    console.log("🚀 ~ file: alpha-router.ts:1025 ~ blockNumber:", blockNumber)
 
     const routingConfig: AlphaRouterConfig = _.merge(
       {
@@ -1041,7 +1029,6 @@ export class AlphaRouter
     }
 
     const gasPriceWei = await this.getGasPriceWei();
-    console.log("🚀 ~ file: alpha-router.ts:1044 ~ gasPriceWei:", gasPriceWei)
 
     const quoteToken = quoteCurrency.wrapped;
     const providerConfig: ProviderConfig = {
@@ -1056,7 +1043,6 @@ export class AlphaRouter
       quoteToken,
       providerConfig
     );
-    console.log("🚀 ~ file: alpha-router.ts:1059 ~ v3GasModel:", v3GasModel)
 
     // Create a Set to sanitize the protocols input, a Set of undefined becomes an empty set,
     // Then create an Array from the values of that Set.
@@ -1069,7 +1055,6 @@ export class AlphaRouter
       tradeType,
       protocols
     );
-    console.log("🚀 ~ file: alpha-router.ts:1072 ~ cacheMode:", cacheMode)
 
     // Fetch CachedRoutes
     let cachedRoutes: CachedRoutes | undefined;
@@ -1084,17 +1069,7 @@ export class AlphaRouter
         routingConfig.optimisticCachedRoutes
       );
     }
-    console.log('cache info')
-    console.log({
-      tokenIn: tokenIn.symbol,
-      tokenInAddress: tokenIn.address,
-      tokenOut: tokenOut.symbol,
-      tokenOutAddress: tokenOut.address,
-      cacheMode,
-      amount: amount.toExact(),
-      chainId: this.chainId,
-      tradeType: this.tradeTypeStr(tradeType)
-    })
+    
     metric.putMetric(
       routingConfig.useCachedRoutes ? 'GetQuoteUsingCachedRoutes' : 'GetQuoteNotUsingCachedRoutes',
       1,
@@ -1121,7 +1096,6 @@ export class AlphaRouter
         `GetCachedRoute miss ${cacheMode} for ${this.tokenPairSymbolTradeTypeChainId(tokenIn, tokenOut, tradeType)}`
       );
     } else if (cachedRoutes && routingConfig.useCachedRoutes) {
-      console.log('Cache mode is empty');
       metric.putMetric(
         `GetCachedRoute_hit_${cacheMode}`,
         1,
@@ -1157,10 +1131,8 @@ export class AlphaRouter
         swapConfig
       );
     }
-    console.log('Cache mode ', cacheMode)
     let swapRouteFromChainPromise: Promise<BestSwapRoute | null> = Promise.resolve(null);
     if (!cachedRoutes || cacheMode !== CacheMode.Livemode) {
-      console.log('get swamp route from chain')
       swapRouteFromChainPromise = this.getSwapRouteFromChain(
         amount,
         tokenIn,
@@ -1180,8 +1152,6 @@ export class AlphaRouter
       swapRouteFromCachePromise,
       swapRouteFromChainPromise
     ]);
-
-    console.log("🚀 ~ file: alpha-router.ts:1179 ~ swapRouteFromChain:", swapRouteFromChain)
 
     let swapRouteRaw: BestSwapRoute | null;
     let hitsCachedRoute = false;
@@ -1333,21 +1303,18 @@ export class AlphaRouter
       tradeType === TradeType.EXACT_OUTPUT ?
         originalAmount  // we need to pass in originalAmount instead of amount, because amount already added portionAmount in case of exact out swap
         : quote;
-    console.log("🚀 ~ file: alpha-router.ts:1319 ~ tokenOutAmount:", tokenOutAmount)
     
     const portionAmount = this.portionProvider.getPortionAmount(
       tokenOutAmount,
       tradeType,
       swapConfig
     );
-    console.log("🚀 ~ file: alpha-router.ts:1329 ~ portionAmount:", portionAmount)
     const portionQuoteAmount = this.portionProvider.getPortionQuoteAmount(
       tradeType,
       quote,
       amount, // we need to pass in amount instead of originalAmount here, because amount here needs to add the portion for exact out
       portionAmount
     );
-    console.log("🚀 ~ file: alpha-router.ts:1336 ~ portionQuoteAmount:", portionQuoteAmount)
 
     // we need to correct quote and quote gas adjusted for exact output when portion is part of the exact out swap
     const correctedQuote = this.portionProvider.getQuote(
@@ -1355,7 +1322,6 @@ export class AlphaRouter
       quote,
       portionQuoteAmount
     );
-    console.log("🚀 ~ file: alpha-router.ts:1344 ~ correctedQuote:", correctedQuote)
 
     const correctedQuoteGasAdjusted = this.portionProvider.getQuoteGasAdjusted(
       tradeType,
@@ -1383,7 +1349,6 @@ export class AlphaRouter
       portionAmount: portionAmount,
       quoteGasAndPortionAdjusted: quoteGasAndPortionAdjusted,
     };
-    console.log("🚀 ~ file: alpha-router.ts:1372 ~ swapRoute:", swapRoute)
 
     if (
       swapConfig &&
@@ -1581,8 +1546,6 @@ export class AlphaRouter
     // We will get quotes for fractions of the input amount for different routes, then
     // combine to generate split routes.
     const [percents, amounts] = this.getAmountDistribution(amount, routingConfig);
-    console.log("🚀 ~ file: alpha-router.ts:1584 ~ amounts:", amounts)
-    console.log("🚀 ~ file: alpha-router.ts:1584 ~ percents:", percents)
     const noProtocolsSpecified = protocols.length === 0;
     const v3ProtocolSpecified = protocols.includes(Protocol.V3);
     const v2ProtocolSpecified = protocols.includes(Protocol.V2);
@@ -1610,7 +1573,6 @@ export class AlphaRouter
         routingConfig,
         chainId: this.chainId,
       }).then((candidatePools) => {
-        console.log("🚀 ~ file: alpha-router.ts:1613 ~ candidatePools:", candidatePools)
         metric.putMetric('GetV3CandidatePools', Date.now() - beforeGetCandidates, MetricLoggerUnit.Milliseconds);
         return candidatePools;
       });
@@ -1644,7 +1606,6 @@ export class AlphaRouter
 
     // Maybe Quote V3 - if V3 is specified, or no protocol is specified
     if (v3ProtocolSpecified || noProtocolsSpecified) {
-      console.log('Get quote for v3 protocol');
       log.info({ protocols, tradeType }, 'Routing across V3');
 
       metric.putMetric('SwapRouteFromChain_V3_GetRoutesThenQuotes_Request', 1, MetricLoggerUnit.Count);
@@ -1746,7 +1707,6 @@ export class AlphaRouter
     }
 
     const getQuotesResults = await Promise.all(quotePromises);
-    console.log("🚀 ~ file: alpha-router.ts:1748 ~ getQuotesResults:", getQuotesResults)
 
     const allRoutesWithValidQuotes: RouteWithValidQuote[] = [];
     const allCandidatePools: CandidatePoolsBySelectionCriteria[] = [];
@@ -1756,13 +1716,11 @@ export class AlphaRouter
         allCandidatePools.push(getQuoteResult.candidatePools);
       }
     });
-    console.log("🚀 ~ file: alpha-router.ts:1755 ~ getQuotesResults.forEach ~ allCandidatePools:", allCandidatePools)
 
     if (allRoutesWithValidQuotes.length === 0) {
       log.info({ allRoutesWithValidQuotes }, 'Received no valid quotes');
       return null;
     }
-    console.log("🚀 ~ file: alpha-router.ts:1759 ~ allRoutesWithValidQuotes:", allRoutesWithValidQuotes)
 
     // Given all the quotes for all the amounts for all the routes, find the best combination.
     const bestSwapRoute = await getBestSwapRoute(

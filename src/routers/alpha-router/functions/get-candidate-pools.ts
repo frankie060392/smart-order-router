@@ -228,7 +228,6 @@ export async function getV3CandidatePools({
   const allPools = await subgraphProvider.getPools(tokenIn, tokenOut, {
     blockNumber,
   });
-  console.log("🚀 ~ file: get-candidate-pools.ts:225 ~ allPools:", allPools)
 
   log.info(
     { samplePools: allPools.slice(0, 3) },
@@ -267,11 +266,8 @@ export async function getV3CandidatePools({
       filteredPools.push(pool);
     }
   }
-  console.log('filter pool')
-  console.log(filteredPools)
   // Sort by tvlUSD in descending order
   const subgraphPoolsSorted = filteredPools.sort((a, b) => b.tvlUSD - a.tvlUSD);
-  console.log( `After filtering blocked tokens went from ${allPools.length} to ${subgraphPoolsSorted.length}.`)
   log.info(
     `After filtering blocked tokens went from ${allPools.length} to ${subgraphPoolsSorted.length}.`
   );
@@ -282,10 +278,8 @@ export async function getV3CandidatePools({
       .map((pool) => pool.id)
       .forEach((poolAddress) => poolAddressesSoFar.add(poolAddress));
   };
-  console.log("🚀 ~ file: get-candidate-pools.ts:274 ~ poolAddressesSoFar:", poolAddressesSoFar)
 
   const baseTokens = baseTokensByChain[chainId] ?? [];
-  console.log("🚀 ~ file: get-candidate-pools.ts:282 ~ baseTokens:", baseTokens)
 
   const topByBaseWithTokenIn = _(baseTokens)
     .flatMap((token: Token) => {
@@ -307,7 +301,6 @@ export async function getV3CandidatePools({
     .sortBy((tokenListPool) => -tokenListPool.tvlUSD)
     .slice(0, topNWithBaseToken)
     .value();
-  console.log("🚀 ~ file: get-candidate-pools.ts:285 ~ topByBaseWithTokenIn:", topByBaseWithTokenIn)
 
   const topByBaseWithTokenOut = _(baseTokens)
     .flatMap((token: Token) => {
@@ -328,7 +321,6 @@ export async function getV3CandidatePools({
     .sortBy((tokenListPool) => -tokenListPool.tvlUSD)
     .slice(0, topNWithBaseToken)
     .value();
-  console.log("🚀 ~ file: get-candidate-pools.ts:306 ~ topByBaseWithTokenOut:", topByBaseWithTokenOut)
   let top2DirectSwapPool = _(subgraphPoolsSorted)
     .filter((subgraphPool) => {
       return (
@@ -370,7 +362,6 @@ export async function getV3CandidatePools({
       }
     );
   }
-  console.log("🚀 ~ file: get-candidate-pools.ts:326 ~ top2DirectSwapPool:", top2DirectSwapPool)
 
   addToAddressSet(top2DirectSwapPool);
 
@@ -411,7 +402,6 @@ export async function getV3CandidatePools({
       .slice(0, 1)
       .value();
   }
-  console.log("🚀 ~ file: get-candidate-pools.ts:387 ~ top2EthQuoteTokenPool:", top2EthQuoteTokenPool)
 
   addToAddressSet(top2EthQuoteTokenPool);
 
@@ -614,7 +604,6 @@ export async function getV3CandidatePools({
       topByTVLUsingTokenOutSecondHops,
     },
   };
-  console.log("🚀 ~ file: get-candidate-pools.ts:610 ~ poolsBySelection:", poolsBySelection)
 
   return { poolAccessor, candidatePools: poolsBySelection, subgraphPools };
 }
